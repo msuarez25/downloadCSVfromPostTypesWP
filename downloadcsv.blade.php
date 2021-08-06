@@ -1,10 +1,11 @@
-@php
+<?php
 /*
 *    Template Name: Download CSV
+*    Author: Mauricio Suarez
+*    Description: Easy edition and implementation. This was thinking to be used as a wordpress template. Nevertheless, there is others ways to implement it with wordpress.
 */
-@endphp
-@extends('layouts.app')
-@php
+
+// Create csv file with info in $array
 
 function array_to_csv_download($array, $filename = 'export.csv', $delimiter = ';')
 {
@@ -26,9 +27,11 @@ function array_to_csv_download($array, $filename = 'export.csv', $delimiter = ';
     exit();
 }
 
+// Return query as a array
+
 function postArray()
 {
-    $array = [['title', 'content']];
+    $array = [['title', 'content']];  // these are the columns labels
     $args = [
         'post_type' => 'post',
         'posts_per_page' => -1,
@@ -38,17 +41,20 @@ function postArray()
         $id = $post->ID;
         $title = get_the_title($id);
         $content = get_post_field('post_content', $id);
-        $array2 = [$title, $content];
+        $array2 = [$title, $content]; // these are the info for each column
         $array[] = $array2;
     }
     return $array;
 }
 
+// Call the function and download the csv file
 array_to_csv_download(
     postArray(), // this array is going to be the second row
     'export.csv', // name of file
 );
-@endphp
+?>
+
+<!-- This js just close the window that is opened when the download file is called-->
 <script>
     window.close();
 </script>
